@@ -22,7 +22,7 @@ public final class SimpleGUI {
     private static final int PROPORTION = 5;
 
     private final JFrame frame = new JFrame();
-    private final Controller controller = new Controller();
+    private Controller controller;
 
     public SimpleGUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,13 +39,18 @@ public final class SimpleGUI {
                 try {
                     controller.readAndSave(textArea.getText());
                     textArea.setText("");
-                    JOptionPane.showMessageDialog(frame, "String saved successfully!", "String saved", JOptionPane.DEFAULT_OPTION);
+                    JOptionPane.showMessageDialog(frame, "String saved successfully!", "String saved", 
+                        JOptionPane.DEFAULT_OPTION);
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, e1, "Error", JOptionPane.ERROR_MESSAGE);
                     e1.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
         });
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     private void display() {
@@ -60,20 +65,20 @@ public final class SimpleGUI {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
         final int sh = (int) screen.getHeight();
-        frame.setSize(sw / PROPORTION, sh / PROPORTION);
+        this.frame.setSize(sw / PROPORTION, sh / PROPORTION);
         /*
          * Instead of appearing at (0,0), upper left corner of the screen, this
          * flag makes the OS window manager take care of the default positioning
          * on screen. Results may vary, but it is generally the best choice.
          */
-        frame.setLocationByPlatform(true);
+        this.frame.setLocationByPlatform(true);
         /*
          * OK, ready to push the frame onscreen
          */
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
-    public static void main(final String... args) {
-        new SimpleGUI().display();
+    public void start() {
+        display();
     }
 }

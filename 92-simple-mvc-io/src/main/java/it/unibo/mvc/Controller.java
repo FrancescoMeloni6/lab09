@@ -9,6 +9,9 @@ import java.util.Objects;
  * Application controller. Performs the I/O.
  */
 public class Controller {
+
+    private SimpleGUI mainView;
+    private SimpleGUIWithFileChooser fileChooserView;
     
     private final static String OUTPUT_FILE = System.getProperty("user.home") +
         System.getProperty("file.separator") + "output.txt";
@@ -16,7 +19,7 @@ public class Controller {
     private File file;
 
     public Controller() {
-        file = new File(OUTPUT_FILE);
+        this(new File(OUTPUT_FILE));
     }
 
     public Controller(final File file) {
@@ -39,5 +42,18 @@ public class Controller {
         PrintStream ps = new PrintStream(file);
         ps.println(string);
         ps.close();
+    }
+
+    public void setViews(final SimpleGUI mainView, final SimpleGUIWithFileChooser fileChooserView) {
+        this.mainView = mainView;
+        mainView.setController(this);
+        mainView.start();
+        this.fileChooserView = fileChooserView;
+        fileChooserView.setController(this);
+        fileChooserView.start();
+    }
+
+    public static void main(String[] args) {
+        new Controller().setViews(new SimpleGUI(), new SimpleGUIWithFileChooser());
     }
 }
