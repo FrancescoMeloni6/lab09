@@ -5,16 +5,24 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.xml.crypto.Data;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
@@ -75,7 +83,12 @@ public class BadIOGUI {
         read.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(read.getText());
+                try (DataInputStream sr = new DataInputStream(new FileInputStream(PATH))){
+                    System.out.println(sr.readInt());// NOPMD: allowed as this is just an exercise
+                } catch (Exception e2) {
+                    JOptionPane.showMessageDialog(frame, e2, "Error", JOptionPane.ERROR_MESSAGE);
+                    e2.printStackTrace(); // NOPMD: allowed as this is just an exercise
+                }
             }
         });
     }
