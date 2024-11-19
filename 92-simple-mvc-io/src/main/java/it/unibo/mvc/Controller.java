@@ -36,7 +36,6 @@ public class Controller {
     }
 
     public void readAndSave(final String string) throws IOException{
-        Objects.requireNonNull(string);
         PrintStream ps = new PrintStream(file);
         ps.println(string);
         ps.close();
